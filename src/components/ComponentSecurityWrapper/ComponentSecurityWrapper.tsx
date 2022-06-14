@@ -1,6 +1,7 @@
-import React, {FC} from "react";
+import React, {FC, useContext} from "react";
 import {ISecurityComponentWrapperProps} from "./ComponentSecurityWrapper.interfaces";
 import {useSecurityWrapperState} from "./hook/useSecurityWrapperState";
+import {SecurityContext} from "../ModuleSecurityWrapper/ModuleSecurityWrapper";
 
 function map(children: React.ReactNode | React.ReactElement, fn: any): React.ReactNode | React.ReactElement {
   return React.Children.map(children, child => {
@@ -11,8 +12,9 @@ function map(children: React.ReactNode | React.ReactElement, fn: any): React.Rea
   });
 }
 
-export const ComponentSecurityWrapper: FC<ISecurityComponentWrapperProps> = (props: ISecurityComponentWrapperProps) => {
-  const { disabled } = useSecurityWrapperState(props);
+export const ComponentSecurityWrapper: FC<ISecurityComponentWrapperProps> = ( { children,componentId } : ISecurityComponentWrapperProps) => {
+  const args = useContext(SecurityContext)
+  const { disabled } = useSecurityWrapperState({...args, componentId});
   const disableProps = {
     disabled: disabled,
     onClick: (e: React.MouseEvent<unknown>) => e.preventDefault(),
@@ -23,7 +25,6 @@ export const ComponentSecurityWrapper: FC<ISecurityComponentWrapperProps> = (pro
       opacity: 0.3,
     },
   };
-  const {children} = props;
   return (<>{map(children, (child: any) => React.cloneElement(child, disabled ? {...disableProps} : {}))}</>);
 };
 

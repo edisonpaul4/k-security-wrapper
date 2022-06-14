@@ -5,5 +5,10 @@ export interface ISecurityModuleWrapperProps {
   children?: React.ReactNode;
   componentId?: string;
   apiURL: string;
-  // render: (userRoles: RoleModel[], )
+}
+
+
+export interface ISecurityContextValue {
+  requiredRoles: RoleModel[],
+  userRoles: string[]
 }

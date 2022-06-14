@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { ISecurityModuleWrapperProps } from "./ModuleSecurityWrapper.interfaces";
+import React, {createContext, FC, useContext} from "react";
+import {ISecurityContextValue, ISecurityModuleWrapperProps} from "./ModuleSecurityWrapper.interfaces";
 import { useSecurityWrapperState } from "./hook/useSecurityWrapperState";
 
 function map(children: React.ReactNode | React.ReactElement, fn: any): React.ReactNode | React.ReactElement {
@@ -11,13 +11,24 @@ function map(children: React.ReactNode | React.ReactElement, fn: any): React.Rea
   });
 }
 
+export const SecurityContext = createContext<ISecurityContextValue>({
+  requiredRoles:[],
+  userRoles:[]
+});
+
 export const ModuleSecurityWrapper: FC<ISecurityModuleWrapperProps> = (props: ISecurityModuleWrapperProps) => {
   const { allow, requiredRoles, userRoles } = useSecurityWrapperState(props);
+
   const { children } = props;
   return (<>
     {
-      !allow && (<div>nopermitido</div>)}
-    {allow && (children)}
+      !allow && (<>nopermitido</>)
+    }
+    {allow &&
+        (<SecurityContext.Provider value={{requiredRoles, userRoles}}>
+          {children}
+        </SecurityContext.Provider>)
+    }
   </>);
 };
 
