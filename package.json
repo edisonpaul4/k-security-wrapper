@@ -1,12 +1,13 @@
 {
   "name": "k-security-wrapper",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "Super Secure Library",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "publish-npm": "npm run build && npm publish"
   },
   "author": "Paul Mosquera",
   "license": "ISC",
@@ -16,7 +17,7 @@
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-typescript": "^8.3.3",
     "@types/react": "^18.0.12",
-    "react": "^18.1.0",
+    "react": "^16.12.0",
     "rollup": "^2.75.6",
     "rollup-plugin-dts": "^4.2.2",
     "tslib": "^2.4.0",
@@ -26,5 +27,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "jwt-decode": "^3.1.2"
-  }
+  },
+  "files": [ "dist", "README.md" ],
+  "types": "dist/index.d.ts"
 }
