@@ -9,7 +9,7 @@ import { TypeIssuerEnum } from "../../../constants/TokenType";
 export const useSecurityWrapperState = (
   props: ISecurityModuleWrapperProps
 ): IUseSecurityModuleWrapperState => {
-  const { componentId, apiURL } = props;
+  const { componentId, basePath } = props;
   const [allow, setAllow] = useState(false);
   const [requiredRoles, setRequiredRoles] = useState<RoleModel[]>([]);
   const [userRoles, setUserRoles] = useState<string[]>([]);
@@ -37,7 +37,7 @@ export const useSecurityWrapperState = (
           },
         };
         const res = await axios.get(
-          apiURL,
+          `${basePath}/api/v1/security/modules/${componentId}/components`,
           config
         );
         requiredRoles = res.data;

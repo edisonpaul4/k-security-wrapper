@@ -28,7 +28,7 @@ export class RoleHelper {
       };
     
       public static checkIfIdIsInRequiredRoles (id: string, requiredRoles: RoleModel[]):boolean {
-        return requiredRoles!.filter((item)=>item.id===id).length>0;
+        return requiredRoles!.filter((item)=>item.id === id).length>0;
       };
 
       public static _getTokenIssuer() {

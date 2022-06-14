@@ -4,7 +4,7 @@ import { RoleModel } from "../../models/Role";
 export interface ISecurityModuleWrapperProps {
   children?: React.ReactNode;
   componentId?: string;
-  apiURL: string;
+  basePath: string;
 }
 
 
