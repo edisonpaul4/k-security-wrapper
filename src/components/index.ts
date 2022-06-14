@@ -1,1 +1,3 @@
-export { default as Button } from "./ComponentSecurityWrapper";
+export { default as ComponentSecurityWrapper } from "./ComponentSecurityWrapper";
+export { default as ModuleSecurityWrapper } from "./ModuleSecurityWrapper";
+

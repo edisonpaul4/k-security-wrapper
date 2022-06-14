@@ -11,7 +11,7 @@ function map(children: React.ReactNode | React.ReactElement, fn: any): React.Rea
   });
 }
 
-export const SecurityWrapper: FC<ISecurityComponentWrapperProps> = (props: ISecurityComponentWrapperProps) => {
+export const ComponentSecurityWrapper: FC<ISecurityComponentWrapperProps> = (props: ISecurityComponentWrapperProps) => {
   const { disabled } = useSecurityWrapperState(props);
   const disableProps = {
     disabled: disabled,
@@ -27,4 +27,4 @@ export const SecurityWrapper: FC<ISecurityComponentWrapperProps> = (props: ISecu
   return (<>{map(children, (child: any) => React.cloneElement(child, disabled ? {...disableProps} : {}))}</>);
 };
 
-export default SecurityWrapper;
+export default ComponentSecurityWrapper;

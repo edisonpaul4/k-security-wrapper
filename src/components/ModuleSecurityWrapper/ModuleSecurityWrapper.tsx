@@ -11,8 +11,8 @@ function map(children: React.ReactNode | React.ReactElement, fn: any): React.Rea
   });
 }
 
-export const SecurityWrapper: FC<ISecurityModuleWrapperProps> = (props: ISecurityModuleWrapperProps) => {
-  const { allow } = useSecurityWrapperState(props);
+export const ModuleSecurityWrapper: FC<ISecurityModuleWrapperProps> = (props: ISecurityModuleWrapperProps) => {
+  const { allow, requiredRoles, userRoles } = useSecurityWrapperState(props);
   const disableProps = {
     disabled: !allow,
     onClick: (e: React.MouseEvent<unknown>) => e.preventDefault(),
@@ -27,4 +27,4 @@ export const SecurityWrapper: FC<ISecurityModuleWrapperProps> = (props: ISecurit
   return (<>{map(children, (child: any) => React.cloneElement(child, !allow ? {...disableProps} : {}))}</>);
 };
 
-export default SecurityWrapper;
+export default ModuleSecurityWrapper;
