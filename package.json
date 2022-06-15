@@ -1,6 +1,6 @@
 {
-  "name": "k-security-wrapper",
-  "version": "3.0.1",
+  "name": "@kushki/security-wrapper",
+  "version": "3.0.5",
   "description": "Super Secure Library",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",

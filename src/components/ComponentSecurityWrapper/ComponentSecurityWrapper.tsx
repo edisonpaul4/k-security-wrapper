@@ -1,7 +1,7 @@
 import React, {FC, useContext} from "react";
+import SecurityContext from "../ModuleSecurityWrapper/hook";
 import {ISecurityComponentWrapperProps} from "./ComponentSecurityWrapper.interfaces";
 import {useSecurityWrapperState} from "./hook/useSecurityWrapperState";
-import {SecurityContext} from "../ModuleSecurityWrapper/ModuleSecurityWrapper";
 
 function map(children: React.ReactNode | React.ReactElement, fn: any): React.ReactNode | React.ReactElement {
   return React.Children.map(children, child => {
