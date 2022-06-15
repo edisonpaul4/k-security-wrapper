@@ -4,4 +4,5 @@ export type RoleModel = {
     parent: string;
     roles: string[];
     type: string;
+    status: string;
   }
