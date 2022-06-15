@@ -7,7 +7,8 @@ export class RoleHelper {
     public static getRoles(requiredRoles: RoleModel[], componentId: string): string[] {
         if(requiredRoles!== undefined) {
           const returnRoles = [];
-          const arrRoles = requiredRoles
+          const enabledRoles = requiredRoles.filter((item)=> item.status === undefined || item.status === "ENABLED" || item.status === "");
+          const arrRoles = enabledRoles
             .filter((value) => value.id === componentId);
           for(let i=0; i<arrRoles.length;i++){
             returnRoles.push(...arrRoles[i].roles)
