@@ -1,7 +1,6 @@
 import React, {createContext, FC, useContext} from "react";
 import {ISecurityContextValue, ISecurityModuleWrapperProps} from "./ModuleSecurityWrapper.interfaces";
 import { useSecurityWrapperState } from "./hook/useSecurityWrapperState";
-import { SecurityContext } from "./hook/context";
 
 function map(children: React.ReactNode | React.ReactElement, fn: any): React.ReactNode | React.ReactElement {
   return React.Children.map(children, child => {
@@ -12,7 +11,10 @@ function map(children: React.ReactNode | React.ReactElement, fn: any): React.Rea
   });
 }
 
-
+export const SecurityContext = createContext<ISecurityContextValue>({
+  requiredRoles: [],
+  userRoles: [],
+});
 
 export const ModuleSecurityWrapper: FC<ISecurityModuleWrapperProps> = (props: ISecurityModuleWrapperProps) => {
   const { allow, requiredRoles, userRoles } = useSecurityWrapperState(props);

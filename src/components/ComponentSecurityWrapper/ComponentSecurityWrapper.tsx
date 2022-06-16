@@ -1,5 +1,6 @@
 import React, {FC, useContext} from "react";
-import SecurityContext from "../ModuleSecurityWrapper/hook";
+import { SecurityContext } from "../ModuleSecurityWrapper/ModuleSecurityWrapper";
+// import SecurityContext from "../ModuleSecurityWrapper/hook";
 import {ISecurityComponentWrapperProps} from "./ComponentSecurityWrapper.interfaces";
 import {useSecurityWrapperState} from "./hook/useSecurityWrapperState";
 
