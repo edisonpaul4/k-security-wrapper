@@ -1,32 +1,55 @@
-import {IUseSecurityWrapperState} from "./useSecurityWrapperState.interfaces";
-import {useEffect, useState} from "react";
+import { IUseSecurityWrapperState } from "./useSecurityWrapperState.interfaces";
+import { useEffect, useState } from "react";
 import { RoleHelper } from "../../../helpers/Role";
 import { ISecurityComponentWrapperProps } from "../ComponentSecurityWrapper.interfaces";
 
-export const useSecurityWrapperState = (props: ISecurityComponentWrapperProps): IUseSecurityWrapperState => {
-  const {componentId, requiredRoles, userRoles} = props;
+export const useSecurityWrapperState = (
+  props: ISecurityComponentWrapperProps
+): IUseSecurityWrapperState => {
+  const { componentId, requiredRoles, userRoles } = props;
   const [disabled, setDisabled] = useState(false);
 
-  useEffect(()=>{
-    if(requiredRoles===undefined || requiredRoles.length===0){
+  useEffect(() => {
+    // Verifica si requiredRoles al menos existe
+    if (requiredRoles === undefined || requiredRoles.length === 0) {
       setDisabled(false);
       return;
     }
-    if(userRoles!==undefined){
-      for(let i=0; i<userRoles.length;i++){
-        if(RoleHelper.checkIfRoleIsInArray(userRoles[i], requiredRoles, componentId ? componentId : "")){
-          setDisabled(false);
-          return;
-        }
-      }
-    }
-    if(componentId !== undefined
-      && !RoleHelper.checkIfIdIsInRequiredRoles(componentId, requiredRoles)){
+    // Verifica si componentId al menos existe
+    if (componentId === undefined || componentId === "") {
       setDisabled(false);
       return;
     }
-    setDisabled(true);
-  },[userRoles,requiredRoles]);
+    // Verifica si userRoles al menos existe
+    if (userRoles === undefined || userRoles.length === 0) {
+      setDisabled(false);
+      return;
+    }
+    //Verificar si existe en requiredRoles el componente en base al componentId y si este contiene roles
+    if (
+      RoleHelper.verifyIfComponentIsInRequiredRoles(
+        requiredRoles,
+        componentId ? componentId : ""
+      )
+    ) {
+    } else {
+      setDisabled(false);
+      return;
+    }
+    // Verifica si el userRoles tiene algun rol en requiredRoles
+    if (
+      RoleHelper.checkIfUserRoleIsInRequiredRole(
+        userRoles,
+        requiredRoles,
+        componentId ? componentId : ""
+      )
+    ) {
+      setDisabled(false);
+      return;
+    }
 
-  return {disabled};
+    setDisabled(true);
+  }, [userRoles, requiredRoles]);
+
+  return { disabled };
 };

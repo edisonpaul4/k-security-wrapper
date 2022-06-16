@@ -17,10 +17,10 @@ export const useSecurityWrapperState = (
   useEffect(() => {
     let requiredRoles: RoleModel[] = [];
     let userRoles: string[] = [];
+    setAllow(false);
     async function getRolesAndVerify() {
       try {
-        setAllow(false);
-        // Verifica el issuer, si es CG para la logica y deja continuar
+        // Verifica el issuer, si es Cognito para la logica y retorna, caso contrario pide los requiredRoles
         if (RoleHelper._getTokenIssuer() === TypeIssuerEnum.COGNITO) {
           setAllow(true);
           return;
@@ -28,49 +28,55 @@ export const useSecurityWrapperState = (
           userRoles = RoleHelper._getTokenRoles();
           setUserRoles(userRoles);
         }
+        // Verifica si componentId al menos existe
+        if (componentId === undefined || componentId === "") {
+          setAllow(true);
+          return;
+        }
         // Pregunta al back por los roles requeridos
-        const jwt = localStorage.getItem("jwt")!;
-        let config: AxiosRequestConfig = {
-          headers: {
-            Authorization: jwt,
-            "Content-type": "application/json",
-          },
-        };
-        const res = await axios.get(
-          `${basePath}/api/v1/security/modules/${componentId}/components`,
-          config
-        );
-        requiredRoles = res.data;
+        requiredRoles = (
+          await RoleHelper._getRequiredRolesFromAPI(basePath, componentId!)
+        ).data;
         setRequiredRoles(requiredRoles);
+
+        // Verifica si requiredRoles al menos existe y tiene longitud de mas de 0
         if (requiredRoles === undefined || requiredRoles.length === 0) {
           setAllow(true);
           return;
         }
 
-        if (userRoles !== undefined) {
-          for (let i = 0; i < userRoles.length; i++) {
-            if (
-              RoleHelper.checkIfRoleIsInArray(
-                userRoles[i],
-                requiredRoles,
-                componentId ? componentId : ""
-              )
-            ) {
-              setAllow(true);
-              return;
-            }
-          }
+        // Verifica si userRoles al menos existe y tiene longitud de mas de 0
+        if (userRoles === undefined || userRoles.length === 0) {
+          setAllow(false);
+          return;
         }
+
+        //Verificar si existe en requiredRoles el modulo en base al componentId y si este contiene roles
         if (
-          componentId !== undefined &&
-          !RoleHelper.checkIfIdIsInRequiredRoles(componentId, requiredRoles)
+          RoleHelper.verifyIfComponentIsInRequiredRoles(
+            requiredRoles,
+            componentId!
+          )
+        ) {
+        } else {
+          setAllow(true);
+          return;
+        }
+
+        // Verifica si el userRoles tiene algun rol en requiredRoles
+        if (
+          RoleHelper.checkIfUserRoleIsInRequiredRole(
+            userRoles,
+            requiredRoles,
+            componentId!
+          )
         ) {
           setAllow(true);
           return;
         }
         setAllow(false);
       } catch (error) {
-        setAllow(false);
+        setAllow(true);
       }
     }
     getRolesAndVerify();

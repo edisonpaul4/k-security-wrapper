@@ -22,7 +22,7 @@ export const ModuleSecurityWrapper: FC<ISecurityModuleWrapperProps> = (props: IS
   const { children } = props;
   return (<>
     {
-      !allow && (<>nopermitido</>)
+      !allow && (<>NOT ALLOWED</>)
     }
     {allow &&
         (<SecurityContext.Provider value={{requiredRoles, userRoles}}>
