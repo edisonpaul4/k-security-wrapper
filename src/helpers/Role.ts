@@ -58,7 +58,7 @@ export class RoleHelper {
       : TypeIssuerEnum.AZURE;
   }
   private static _findTypeJwt(type: string, issuer: string): boolean {
-    return type.includes(issuer);
+    return RegExp("\\b" + type + "\\b").test(issuer);
   }
 
   public static _getTokenRoles() {
