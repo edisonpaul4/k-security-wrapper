@@ -17,17 +17,8 @@ export const useSecurityWrapperState = (
   useEffect(() => {
     let requiredRoles: RoleModel[] = [];
     let userRoles: string[] = [];
-    setAllow(false);
     async function getRolesAndVerify() {
       try {
-        // Verifica el issuer, si es Cognito para la logica y retorna, caso contrario pide los requiredRoles
-        if (RoleHelper._getTokenIssuer() === TypeIssuerEnum.COGNITO) {
-          setAllow(true);
-          return;
-        } else {
-          userRoles = RoleHelper._getTokenRoles();
-          setUserRoles(userRoles);
-        }
         // Verifica si componentId al menos existe
         if (componentId === undefined || componentId === "") {
           setAllow(true);
@@ -79,7 +70,15 @@ export const useSecurityWrapperState = (
         setAllow(true);
       }
     }
-    getRolesAndVerify();
+    // Verifica el issuer, si es Cognito para la logica y retorna, caso contrario pide los requiredRoles
+    if (RoleHelper._getTokenIssuer() === TypeIssuerEnum.COGNITO) {
+      setAllow(true);
+      return;
+    } else {
+      userRoles = RoleHelper._getTokenRoles();
+      setUserRoles(userRoles);
+      getRolesAndVerify();
+    }
   }, [componentId]);
 
   return { allow, requiredRoles, userRoles };

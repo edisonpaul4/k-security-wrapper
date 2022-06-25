@@ -52,15 +52,15 @@ export class RoleHelper {
   }
 
   public static _getTokenIssuer() {
-    const objectJwt = jwtDecode<JwtPayload>(RoleHelper._getJWT()!);
+    const objectJwt = jwtDecode<JwtPayload>(localStorage.getItem("jwt")!);
     return this._findTypeJwt("cognito", objectJwt.iss!)
       ? TypeIssuerEnum.COGNITO
       : TypeIssuerEnum.AZURE;
   }
-  private static _findTypeJwt(type: string, issuer: string): boolean {
+  private static _findTypeJwt(type: string, issuer: string) {
     return RegExp("\\b" + type + "\\b").test(issuer);
   }
-
+  
   public static _getTokenRoles() {
     const tokenRoles = jwtDecode<any>(RoleHelper._getJWT()!);
     return tokenRoles.roles;
